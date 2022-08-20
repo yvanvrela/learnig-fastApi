@@ -24,7 +24,7 @@ class Person(BaseModel):
 
 
 @app.get('/')
-def home() -> dict:
+async def home() -> dict:
     # return JSON
     return {'hello': 'word'}, 200
 
@@ -33,5 +33,5 @@ def home() -> dict:
 
 
 @app.post('/person/')
-def add_person(person: Person = Body(...)):
+async def add_person(person: Person = Body(...)):
     return person
