@@ -20,6 +20,26 @@ class Person(BaseModel):
     is_married: bool | None = None  # Optional
 
 
+# Fake Data
+
+fake_persons = [
+    {
+        'first_name': 'Fede',
+        'last_name': 'Varela',
+        'age': 22,
+        'hair_color': None,
+        'is_married': False,
+    },
+    {
+        'first_name': 'Aldo',
+        'last_name': 'Bala',
+        'age': 50,
+        'hair_color': 'Red',
+        'is_married': True,
+    },
+]
+
+
 # Path Operator Decoration
 
 
@@ -32,6 +52,16 @@ async def home() -> dict:
 # Request and Response Body
 
 
-@app.post('/person/')
+@app.post('/persons/')
 async def add_person(person: Person = Body(...)):
     return person
+
+# Query Parameters and String Validations
+
+
+@app.get('/persons/')
+async def get_person(q: str | None = None):
+    results = fake_persons
+    if q:
+        results.update({'q': q})
+    return {'persons': results}
