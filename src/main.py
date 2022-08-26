@@ -80,7 +80,7 @@ async def show_person(
 
 # Validations: Query Parameters
 
-@app.get('/person/detail/{perosn_id}')
+@app.get('/person/detail/{person_id}')
 async def show_person(
     person_id: int = Path(
         ...,
