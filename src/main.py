@@ -4,6 +4,7 @@ from pydantic import BaseModel
 # FastApi
 from fastapi import FastAPI
 from fastapi import Body
+from fastapi import Query
 
 # Instancia de la clase
 app = FastAPI()
@@ -55,3 +56,13 @@ async def home() -> dict:
 @app.post('/persons/')
 async def add_person(person: Person = Body(...)):  # (...) Obligatorio
     return person
+
+
+# Validations: Query Parameters
+
+@app.get('/person/detail')
+async def show_person(
+    name: str | None = Query(default=None, min_length=1, max_length=50),
+    age: str = Query(...)  # Not recomender but is a option
+):
+    return {name: age}
