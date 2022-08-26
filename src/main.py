@@ -66,3 +66,4 @@ async def show_person(
     age: str = Query(...)  # Not recomender but is a option
 ):
     return {name: age}
+
