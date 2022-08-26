@@ -68,6 +68,7 @@ Query que es una clase de FastApi.
 - **lt:** Less than --> (<)
 
 **Documentation query parameters:**
+Para una mejor documentacion de los query.
 
 - **Title:**
 - **description:**
