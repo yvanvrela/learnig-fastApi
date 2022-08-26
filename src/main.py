@@ -5,6 +5,7 @@ from pydantic import BaseModel
 from fastapi import FastAPI
 from fastapi import Body
 from fastapi import Query
+from fastapi import Path
 
 # Instancia de la clase
 app = FastAPI()
@@ -62,8 +63,30 @@ async def add_person(person: Person = Body(...)):  # (...) Obligatorio
 
 @app.get('/person/detail')
 async def show_person(
-    name: str | None = Query(default=None, min_length=1, max_length=50),
-    age: str = Query(...)  # Not recomender but is a option
+    name: str | None = Query(
+        default=None,
+        min_length=1, max_length=50,
+        title='Person Name',
+        description="This is the person name. It's between 1 and 50 characters"
+    ),
+    age: str = Query(
+        ...,  # Not recomender but is a option
+        title='Person Age',
+        description="This is the person age. It's required"
+    )
 ):
     return {name: age}
 
+
+# Validations: Query Parameters
+
+@app.get('/person/detail/{perosn_id}')
+async def show_person(
+    person_id: int = Path(
+        ...,
+        gt=0,
+        title='Person Id',
+        description="This is the person id. It's requered and must be greater than 0"
+    )
+):
+    return {person_id: 'It exists!'}
