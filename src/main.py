@@ -53,15 +53,5 @@ async def home() -> dict:
 
 
 @app.post('/persons/')
-async def add_person(person: Person = Body(...)):
+async def add_person(person: Person = Body(...)):  # (...) Obligatorio
     return person
-
-# Query Parameters and String Validations
-
-
-@app.get('/persons/')
-async def get_person(q: str | None = None):
-    results = fake_persons
-    if q:
-        results.update({'q': q})
-    return {'persons': results}
