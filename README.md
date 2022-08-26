@@ -7,13 +7,22 @@
 
 ### Run Server
 
-uvicorn main:app --reload
+`uvicorn main:app --reload`
+
+---
 
 ### Path Operations
 
 Un path va despues del dominio --> mi-dominio.com/PATH/
 
 Path --> Routes --> Endpoints mi-dominio.com/API/
+
+```python
+@app.get('/')
+    async def home() -> dict:
+        # return JSON
+        return {'hello': 'word'}, 200
+```
 
 #### Operations
 
@@ -27,6 +36,8 @@ Los parametros de rutas son parte variable de un URL se utiliza para señalar un
 **Pasarlo es obligatorio**
 /path/{id}
 
+---
+
 ### Request Body - Response Body
 
 Cuando el cliente se cominica con el servidor se denomina Request y cuanto es al reves se denomina Response.
@@ -36,6 +47,8 @@ Request Body es el **body** de una **peticion** http
 Response Body es la **respuesta** de una **peticion** http
 
 Los dos se envian en formato JSON
+
+---
 
 #### Query Parameters
 
@@ -48,6 +61,8 @@ Se añaden despues de "?" y para agregar mas se utiliza "&".
 GET --> /users/{user_id}/details
 PUT --> /users/{user_id}/details?age=20
 PUT --> /users/{user_id}/details?age=20&height=180
+
+---
 
 #### Validation Query
 
@@ -72,3 +87,23 @@ Para una mejor documentacion de los query.
 
 - **Title:**
 - **description:**
+
+---
+
+#### Datos especiales
+
+Pydantic Types
+For more information, see the [Field Types Pydantic](https://pydantic-docs.helpmanual.io/usage/types/ "Field Types Pydantic")
+Exotics - Common
+
+- **Enum:**
+- **HttpUrl:** Validate url.
+- **FilePath:** Validate route. --> C:/windows/system32/400.dll
+- **DirectorPath:** Validate route. --> /C/windows/system32/
+- **EmailStr:** Validate email --> hi@hi.com
+- **PaymentCardNumber:**
+- **IPvAnyAddress:**
+- **PositiveFloat:**
+- **NegativeFloat:**
+- **PositiveInt:**
+- **NegativeInt:**
