@@ -1,5 +1,14 @@
 # Learnig FastApi
 
+### Requirements
+
+- fastapi
+- uvicorn
+
+#### Run Server
+
+uvicorn main:app --reload
+
 ### Path Operations
 
 Un path va despues del dominio -> mi-dominio.com/PATH/
@@ -17,16 +26,22 @@ Pasarlo es obligatorio
 "/path/{id}"
 
 ### Request Body - Response Body
+
 Cuando el cliente se cominica con el servidor se denomina Request y cuanto es al reves se denomina Response.
 Request Body es el body de una peticion http
-Response Body es la respuesta de una peticion http 
+Response Body es la respuesta de una peticion http
 Los dos se envian en formato JSON
-
 
 #### Query Parameters
 
 Es un conjunto de elementos opcionales que se añaden al finalizar la ruta con el objetivo de definir contenido o acciones a la url.
+Lo ideal es que siempre sea opcional
 Se añaden despues de "?" y para agregar mas se utiliza "&"
 GET -> /users/{user_id}/details
 PUT -> /users/{user_id}/details?age=20
 PUT -> /users/{user_id}/details?age=20&height=180
+
+##### Validation Query
+
+Opcional para el nombre se define como un str, y la validacion se hace con un parametro Query que es una clase de FastApi
+name: str | None = Query(default=None, min_length=1, max_length=50),
