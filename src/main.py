@@ -1,11 +1,14 @@
+# Python
+from enum import Enum
+
 # Pydantic
 from pydantic import BaseModel
+from pydantic import Field
 
 # FastApi
 from fastapi import FastAPI
 from fastapi import Body
 from fastapi import Query
-from fastapi import Path
 from fastapi import Path
 
 # Instancia de la clase
@@ -19,13 +22,39 @@ class Location(BaseModel):
     state: str
     country: str
 
+# Enum create numerate strings
+# Use to specific cases
+
+
+class HairColr(Enum):
+    white = 'white'
+    brown = 'brown'
+    black = 'black'
+    blonde = 'blonde'
+    red = 'red'
+
+# Validate atributes whith Field class
+
 
 class Person(BaseModel):
-    first_name: str
-    last_name: str
-    age: int
-    hair_color: str | None = None  # Optional
-    is_married: bool | None = None  # Optional
+    first_name: str = Field(
+        ...,
+        min_length=1,
+        max_length=50
+    )
+    last_name: str = Field(
+        ...,
+        min_length=1,
+        max_length=50
+    )
+    age: int = Field(
+        ...,
+        gt=0,
+        le=115
+    )
+    # Recieved HairColor class
+    hair_color: HairColr | None = Field(default=None)
+    is_married: bool | None = Field(default=None)
 
 
 # Fake Data
@@ -115,4 +144,4 @@ async def update_person(
     results = person.dict()
     # Combined
     results.update(location.dict())
-    return person
+    return results
