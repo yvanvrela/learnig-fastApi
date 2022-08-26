@@ -6,12 +6,18 @@ from fastapi import FastAPI
 from fastapi import Body
 from fastapi import Query
 from fastapi import Path
+from fastapi import Path
 
 # Instancia de la clase
 app = FastAPI()
 
 
 # Models
+
+class Location(BaseModel):
+    city: str
+    state: str
+    country: str
 
 
 class Person(BaseModel):
@@ -90,3 +96,23 @@ async def show_person(
     )
 ):
     return {person_id: 'It exists!'}
+
+
+# Validations: Request Body
+
+@app.put('/person/{person_id}')
+async def update_person(
+    person_id: int = Path(
+        ...,
+        title='Person Id',
+        description="This is the person id",
+        gt=0
+    ),
+    person: Person = Body(...),
+    location: Location = Body(...)
+):
+    # To Dict
+    results = person.dict()
+    # Combined
+    results.update(location.dict())
+    return person
