@@ -22,17 +22,20 @@ class Location(BaseModel):
     city: str = Field(
         ...,
         min_length=1,
-        max_length=100
+        max_length=100,
+        example='Enc'
     )
     state: str = Field(
         ...,
         min_length=1,
-        max_length=100
+        max_length=100,
+        example='Itapua'
     )
     country: str = Field(
         ...,
         min_length=1,
-        max_length=100
+        max_length=100,
+        example='Paraguay'
     )
 
 # Enum create numerate strings
@@ -69,6 +72,18 @@ class Person(BaseModel):
     # Recieved HairColor class
     hair_color: HairColr | None = Field(default=None)
     is_married: bool | None = Field(default=None)
+
+    # Schema
+    class Config:
+        schema_extra = {
+            'example': {
+                'first_name': 'Yvan',
+                'last_name': 'Varela',
+                'age': '23',
+                'hair_color': 'brown',
+                'is_married': False
+            }
+        }
 
 
 # Fake Data
