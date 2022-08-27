@@ -1,2 +1,4 @@
 fastapi
 uvicorn
+# Or 
+"fastapi[all]"
