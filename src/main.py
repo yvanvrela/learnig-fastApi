@@ -4,6 +4,7 @@ from enum import Enum
 # Pydantic
 from pydantic import BaseModel
 from pydantic import Field
+from pydantic import EmailStr
 
 # FastApi
 from fastapi import FastAPI
@@ -18,9 +19,21 @@ app = FastAPI()
 # Models
 
 class Location(BaseModel):
-    city: str
-    state: str
-    country: str
+    city: str = Field(
+        ...,
+        min_length=1,
+        max_length=100
+    )
+    state: str = Field(
+        ...,
+        min_length=1,
+        max_length=100
+    )
+    country: str = Field(
+        ...,
+        min_length=1,
+        max_length=100
+    )
 
 # Enum create numerate strings
 # Use to specific cases
@@ -52,13 +65,13 @@ class Person(BaseModel):
         gt=0,
         le=115
     )
+    email: EmailStr
     # Recieved HairColor class
     hair_color: HairColr | None = Field(default=None)
     is_married: bool | None = Field(default=None)
 
 
 # Fake Data
-
 fake_persons = [
     {
         'first_name': 'Fede',
