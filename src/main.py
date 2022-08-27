@@ -2,11 +2,13 @@
 from enum import Enum
 
 # Pydantic
+# Sirve para definir los modelos de datos
 from pydantic import BaseModel
 from pydantic import Field
 from pydantic import EmailStr
 
 # FastApi
+# Sirve para definir el tipo de dato
 from fastapi import FastAPI
 from fastapi import Body
 from fastapi import Query
@@ -42,7 +44,7 @@ class Location(BaseModel):
 # Use to specific cases
 
 
-class HairColr(Enum):
+class HairColr(str, Enum):
     white = 'white'
     brown = 'brown'
     black = 'black'
@@ -130,12 +132,14 @@ async def show_person(
         default=None,
         min_length=1, max_length=50,
         title='Person Name',
-        description="This is the person name. It's between 1 and 50 characters"
+        description="This is the person name. It's between 1 and 50 characters",
+        example='Facundo'
     ),
     age: str = Query(
         ...,  # Not recomender but is a option
         title='Person Age',
-        description="This is the person age. It's required"
+        description="This is the person age. It's required",
+        example='25'
     )
 ):
     return {name: age}
@@ -149,7 +153,8 @@ async def show_person(
         ...,
         gt=0,
         title='Person Id',
-        description="This is the person id. It's requered and must be greater than 0"
+        description="This is the person id. It's requered and must be greater than 0",
+        example=20
     )
 ):
     return {person_id: 'It exists!'}
@@ -163,7 +168,8 @@ async def update_person(
         ...,
         title='Person Id',
         description="This is the person id",
-        gt=0
+        gt=0,
+        example=20
     ),
     person: Person = Body(...),
     location: Location = Body(...)
