@@ -13,6 +13,7 @@ from fastapi import FastAPI
 from fastapi import Body
 from fastapi import Query
 from fastapi import Path
+from fastapi import status
 
 # Instancia de la clase
 app = FastAPI()
@@ -109,7 +110,10 @@ class PersonOut(PersonBase):
 # Path Operator Decoration
 
 
-@app.get('/')
+@app.get(
+    path='/',
+    status_code=status.HTTP_200_OK
+)
 async def home() -> dict:
     # return JSON
     return {'hello': 'word'}, 200
@@ -119,8 +123,9 @@ async def home() -> dict:
 
 
 @app.post(
-    '/persons/',
-    response_model=PersonOut
+    path='/persons/',
+    response_model=PersonOut,
+    status_code=status.HTTP_201_CREATED,
 )
 async def add_person(person: Person = Body(...)):  # (...) Obligatorio
     return person
@@ -128,7 +133,10 @@ async def add_person(person: Person = Body(...)):  # (...) Obligatorio
 
 # Validations: Query Parameters
 
-@app.get('/person/detail')
+@app.get(
+    path='/person/detail',
+    status_code=status.HTTP_200_OK,
+)
 async def show_person(
     name: str | None = Query(
         default=None,
@@ -149,7 +157,10 @@ async def show_person(
 
 # Validations: Query Parameters
 
-@app.get('/person/detail/{person_id}')
+@app.get(
+    path='/person/detail/{person_id}',
+    status_code=status.HTTP_200_OK,
+)
 async def show_person(
     person_id: int = Path(
         ...,
@@ -164,7 +175,10 @@ async def show_person(
 
 # Validations: Request Body
 
-@app.put('/person/{person_id}')
+@app.put(
+    path='/person/{person_id}',
+    status_code=status.HTTP_200_OK,
+)
 async def update_person(
     person_id: int = Path(
         ...,
