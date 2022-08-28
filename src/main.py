@@ -54,7 +54,7 @@ class HairColr(str, Enum):
 # Validate atributes whith Field class
 
 
-class Person(BaseModel):
+class PersonBase(BaseModel):
     first_name: str = Field(
         ...,
         min_length=1,
@@ -76,6 +76,7 @@ class Person(BaseModel):
     is_married: bool | None = Field(default=None)
 
     # Schema
+
     class Config:
         schema_extra = {
             'example': {
@@ -86,6 +87,14 @@ class Person(BaseModel):
                 'is_married': False
             }
         }
+
+
+class Person(PersonBase):
+    password: str = Field(..., min_length=8)
+
+
+class PersonOut(PersonBase):
+    ...
 
 
 # Fake Data
@@ -119,7 +128,10 @@ async def home() -> dict:
 # Request and Response Body
 
 
-@app.post('/persons/')
+@app.post(
+    path='/persons/',
+    response_model=PersonOut,
+)
 async def add_person(person: Person = Body(...)):  # (...) Obligatorio
     return person
 
