@@ -58,62 +58,52 @@ class PersonBase(BaseModel):
     first_name: str = Field(
         ...,
         min_length=1,
-        max_length=50
+        max_length=50,
+        example='Yvan',
     )
     last_name: str = Field(
         ...,
         min_length=1,
-        max_length=50
+        max_length=50,
+        example='Varela',
     )
     age: int = Field(
         ...,
         gt=0,
-        le=115
+        le=115,
+        example='23',
     )
     email: EmailStr
     # Recieved HairColor class
-    hair_color: HairColr | None = Field(default=None)
-    is_married: bool | None = Field(default=None)
+    hair_color: HairColr | None = Field(
+        default=None,
+        example='brown',
+    )
+    is_married: bool | None = Field(
+        default=None,
+        example=False,
+    )
 
     # Schema
 
-    class Config:
-        schema_extra = {
-            'example': {
-                'first_name': 'Yvan',
-                'last_name': 'Varela',
-                'age': '23',
-                'hair_color': 'brown',
-                'is_married': False
-            }
-        }
+    # class Config:
+    #     schema_extra = {
+    #         'example': {
+    #             'first_name': 'Yvan',
+    #             'last_name': 'Varela',
+    #             'age': '23',
+    #             'hair_color': 'brown',
+    #             'is_married': False,
+    #         }
+    #     }
 
 
 class Person(PersonBase):
-    password: str = Field(..., min_length=8)
+    password: str = Field(..., min_length=8, example='secretosecreto')
 
 
 class PersonOut(PersonBase):
     ...
-
-
-# Fake Data
-fake_persons = [
-    {
-        'first_name': 'Fede',
-        'last_name': 'Varela',
-        'age': 22,
-        'hair_color': None,
-        'is_married': False,
-    },
-    {
-        'first_name': 'Aldo',
-        'last_name': 'Bala',
-        'age': 50,
-        'hair_color': 'Red',
-        'is_married': True,
-    },
-]
 
 
 # Path Operator Decoration
@@ -129,8 +119,8 @@ async def home() -> dict:
 
 
 @app.post(
-    path='/persons/',
-    response_model=PersonOut,
+    '/persons/',
+    response_model=PersonOut
 )
 async def add_person(person: Person = Body(...)):  # (...) Obligatorio
     return person
