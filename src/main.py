@@ -13,6 +13,7 @@ from fastapi import FastAPI
 from fastapi import Body
 from fastapi import Query
 from fastapi import Path
+from fastapi import Form
 from fastapi import status
 
 # Instancia de la clase
@@ -107,6 +108,18 @@ class PersonOut(PersonBase):
     ...
 
 
+class LoginBase(BaseModel):
+    username: str = Field(..., max_length=20, example='fede23')
+    message: str = Field(default='Login successfull')
+
+
+class Login(LoginBase):
+    password: str = Field(..., min_length=8, example='secretosecreto')
+
+
+class LoginOut(LoginBase):
+    ...
+
 # Path Operator Decoration
 
 
@@ -195,3 +208,12 @@ async def update_person(
     # Combined
     results.update(location.dict())
     return results
+
+
+@app.post(
+    path='/login',
+    response_model=LoginOut,
+    status_code=status.HTTP_200_OK
+)
+async def login(username: str = Form(...), password: str = Form(...)):
+    return LoginOut(username=username)
