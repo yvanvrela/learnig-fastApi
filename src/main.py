@@ -165,12 +165,13 @@ async def add_person(person: Person = Body(...)):  # (...) Obligatorio
 
 
 # Validations: Query Parameters
-
+# Deprecated
 @app.get(
     path='/person/detail',
     status_code=status.HTTP_200_OK,
     tags=['Persons'],
     summary='Show Person in the app',
+    deprecated=True,
 )
 async def show_person(
     name: str | None = Query(
