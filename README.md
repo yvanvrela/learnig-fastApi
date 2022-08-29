@@ -107,3 +107,13 @@ Exotics - Common
 - **NegativeFloat:**
 - **PositiveInt:**
 - **NegativeInt:**
+
+---
+
+### Cookie
+
+Una pieza de codigo que un servidor mete en tu computadora cuando estas navegando en la web.
+
+### Headers
+Una parte de una peticion o respuesta HTTP que contiene datos sobre la peticion o la respuesta como el formato, quien la hizo, el contendio, etc.
+

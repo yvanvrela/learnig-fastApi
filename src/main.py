@@ -15,6 +15,7 @@ from fastapi import Query
 from fastapi import Path
 from fastapi import Form
 from fastapi import status
+from fastapi import Header, Cookie
 
 # Instancia de la clase
 app = FastAPI()
@@ -209,6 +210,8 @@ async def update_person(
     results.update(location.dict())
     return results
 
+# Forms
+
 
 @app.post(
     path='/login',
@@ -217,3 +220,33 @@ async def update_person(
 )
 async def login(username: str = Form(...), password: str = Form(...)):
     return LoginOut(username=username)
+
+
+# Cookies and Headers Parameters
+@app.post(
+    path='/contact',
+    status_code=status.HTTP_200_OK
+)
+async def contact(
+    first_name: str = Form(
+        ...,
+        max_length=20,
+        min_length=1,
+        example='Yvan'
+    ),
+    last_name: str = Form(
+        ...,
+        max_length=20,
+        min_length=1,
+        example='Varela'
+    ),
+    email: EmailStr = Form(..., example='email@example.com'),
+    message: str = Form(
+        ...,
+        min_length=20,
+        example='FastApi is amazing, but a need more learnig'
+    ),
+    user_agent: str | None = Header(default=None),
+    ads: str | None = Cookie(default=None)
+):
+    return user_agent
