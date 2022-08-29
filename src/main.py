@@ -140,8 +140,27 @@ async def home() -> dict:
     response_model=PersonOut,
     status_code=status.HTTP_201_CREATED,
     tags=['Persons'],
+    summary='Create Person in the app',
 )
 async def add_person(person: Person = Body(...)):  # (...) Obligatorio
+    """Create Person
+
+    This path operation created a person in the app and save the information in the database
+
+    Args:
+
+        person: Person -> A person model whith: 
+            first_name: Str, min_length=1, max_length=50.
+            last name: Str, min_length=1, max_length=50.
+            age: Int, min=0, max=115.
+            email: Email Type.
+            hair color: Str, white, brown, black, blonde, red'
+            marital status: Bool
+
+    Returns:
+
+    A person model whith first name, last name, age, email, hair color and marital status  
+    """
     return person
 
 
@@ -151,6 +170,7 @@ async def add_person(person: Person = Body(...)):  # (...) Obligatorio
     path='/person/detail',
     status_code=status.HTTP_200_OK,
     tags=['Persons'],
+    summary='Show Person in the app',
 )
 async def show_person(
     name: str | None = Query(
@@ -167,6 +187,21 @@ async def show_person(
         example='25'
     )
 ):
+    """Show Person
+
+    Show the person in the app, whit name and age
+
+    Args:
+
+        name (str or optional): min_length=1, max_length=50.
+        age (Str Required):
+
+    Returns:
+
+        {
+            name: age
+        }
+    """
     return {name: age}
 
 
@@ -179,6 +214,7 @@ persons = [1, 2, 3, 4, 5]
     path='/person/detail/{person_id}',
     status_code=status.HTTP_200_OK,
     tags=['Persons'],
+    summary='Show Person by Id in the app',
 )
 async def show_person(
     person_id: int = Path(
@@ -187,9 +223,27 @@ async def show_person(
         title='Person Id',
         description="This is the person id. It's requered and must be greater than 0",
         example=20,
-        tags=['Persons'],
     )
 ):
+    """Show Person by Id
+
+    Show a person by person_id if exists in the database
+
+    Args:
+
+        person_id (int, optional): not person_id=0.
+
+    Raises:
+
+        HTTPException: status_code=404, This person doesn't exist. 
+
+    Returns:
+
+        {
+            person_id: 'It exists'
+        }
+    """
+
     if person_id not in persons:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -204,6 +258,7 @@ async def show_person(
     path='/person/{person_id}',
     status_code=status.HTTP_200_OK,
     tags=['Persons'],
+    summary='Update person in the app',
 )
 async def update_person(
     person_id: int = Path(
@@ -216,6 +271,29 @@ async def update_person(
     person: Person = Body(...),
     location: Location = Body(...)
 ):
+    """Update Person
+
+    Update a person by person_id in the app and update in the database
+
+    Args:
+
+        person_id (int, optional): This is the person id. 
+        person (Person, required): This is a person model, content:
+            first_name (str) min_length=1, max_length=50.
+            last_name (str): min_length=1, max_length=50.
+            age: (int): min=0, max=115.
+            email (email Type).
+            hair color (str):, white, brown, black, blonde, red-
+            marital status (bool): (default is false).
+        location (Location, required): This is a Location model, content:
+            city (str): This is a city,
+            state (str): This is a state of the city,
+            country (str): This is a country.
+
+    Returns:
+
+        json: a json of the person information.
+    """
     # To Dict
     results = person.dict()
     # Combined
@@ -230,8 +308,22 @@ async def update_person(
     response_model=LoginOut,
     status_code=status.HTTP_200_OK,
     tags=['Persons'],
+    summary='Login in the app',
 )
 async def login(username: str = Form(...), password: str = Form(...)):
+    """Login
+
+    This path operation login in the app
+
+    Args:
+
+        username (str, required): This is the username.
+        password (str, required): This is the password, min 8 characters.
+
+    Returns:
+
+        json: a json of strings representing the user 
+    """
     return LoginOut(username=username)
 
 
@@ -240,6 +332,7 @@ async def login(username: str = Form(...), password: str = Form(...)):
     path='/contact',
     status_code=status.HTTP_200_OK,
     tags=['Contact'],
+    summary='Form contact in the app',
 )
 async def contact(
     first_name: str = Form(
@@ -263,6 +356,23 @@ async def contact(
     user_agent: str | None = Header(default=None),
     ads: str | None = Cookie(default=None)
 ):
+    """Form Contact
+
+    This path operation post a Form contact in the app and save in the database
+
+    Args:
+
+        first_name (str, required): This is the first name, minimum characters is 1 and maximum is 20.
+        last_name (str, required): This is the last name, minimum characters is 1 and maximum is 20.
+        email (EmailStr, required): This is the email.
+        message (str, required): This is a the contact message and minimum characters is 20.
+        user_agent (str, optional): This is a contact headers.
+        ads (str, optional): This is a contact cookies.
+
+    Returns:
+
+        string: a string content the user agent information
+    """
     return user_agent
 
 
@@ -271,10 +381,24 @@ async def contact(
 @app.post(
     path='/image',
     tags=['Upload Files'],
+    summary='Upload image in the app',
 )
 async def post_image(
     image: UploadFile = File(...)
 ):
+    """Upload Image
+
+    The path operation upload a image in the app and save in the database
+
+    Args:
+
+        image (UploadFile, required): This is the image.
+
+    Returns:
+
+        json: a json that contains the information of the image
+    """
+
     return {
         'Filename': image.filename,
         'Format': image.content_type,
@@ -287,10 +411,24 @@ async def post_image(
 @app.post(
     path='/image-multiple',
     tags=['Upload Files'],
+    summary='Upload image in the app',
 )
 async def post_image_multiple(
     images: list[UploadFile] = File(...)
 ):
+    """Upload Images
+
+    The route operation upload the images into the application and saves them to the database
+
+    Args:
+
+        images (list[UploadFile], required): This is a list of images.
+
+    Returns:
+
+        list: a list of json that contains the information of the images
+    """
+
     info_images = [{
         "filename": image.filename,
         "Format": image.content_type,

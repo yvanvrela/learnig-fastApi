@@ -134,3 +134,10 @@ Una parte de una peticion o respuesta HTTP que contiene datos sobre la peticion 
     - Filename
     - Content_type --> File format
     - File --> El archivo en si mismo
+
+### Documentations
+
+- Título
+- Descripción
+- Parámetros
+- Resultado
