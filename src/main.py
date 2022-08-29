@@ -124,7 +124,8 @@ class LoginOut(LoginBase):
 
 @app.get(
     path='/',
-    status_code=status.HTTP_200_OK
+    status_code=status.HTTP_200_OK,
+    tags=['Home'],
 )
 async def home() -> dict:
     # return JSON
@@ -138,6 +139,7 @@ async def home() -> dict:
     path='/persons/',
     response_model=PersonOut,
     status_code=status.HTTP_201_CREATED,
+    tags=['Persons'],
 )
 async def add_person(person: Person = Body(...)):  # (...) Obligatorio
     return person
@@ -148,6 +150,7 @@ async def add_person(person: Person = Body(...)):  # (...) Obligatorio
 @app.get(
     path='/person/detail',
     status_code=status.HTTP_200_OK,
+    tags=['Persons'],
 )
 async def show_person(
     name: str | None = Query(
@@ -172,14 +175,19 @@ async def show_person(
 persons = [1, 2, 3, 4, 5]
 
 
-@app.get(path='/person/detail/{person_id}', status_code=status.HTTP_200_OK)
+@app.get(
+    path='/person/detail/{person_id}',
+    status_code=status.HTTP_200_OK,
+    tags=['Persons'],
+)
 async def show_person(
     person_id: int = Path(
         ...,
         gt=0,
         title='Person Id',
         description="This is the person id. It's requered and must be greater than 0",
-        example=20
+        example=20,
+        tags=['Persons'],
     )
 ):
     if person_id not in persons:
@@ -195,6 +203,7 @@ async def show_person(
 @app.put(
     path='/person/{person_id}',
     status_code=status.HTTP_200_OK,
+    tags=['Persons'],
 )
 async def update_person(
     person_id: int = Path(
@@ -219,7 +228,8 @@ async def update_person(
 @app.post(
     path='/login',
     response_model=LoginOut,
-    status_code=status.HTTP_200_OK
+    status_code=status.HTTP_200_OK,
+    tags=['Persons'],
 )
 async def login(username: str = Form(...), password: str = Form(...)):
     return LoginOut(username=username)
@@ -228,7 +238,8 @@ async def login(username: str = Form(...), password: str = Form(...)):
 # Cookies and Headers Parameters
 @app.post(
     path='/contact',
-    status_code=status.HTTP_200_OK
+    status_code=status.HTTP_200_OK,
+    tags=['Contact'],
 )
 async def contact(
     first_name: str = Form(
@@ -258,7 +269,8 @@ async def contact(
 # Files
 
 @app.post(
-    path='/image'
+    path='/image',
+    tags=['Upload Files'],
 )
 async def post_image(
     image: UploadFile = File(...)
@@ -273,7 +285,8 @@ async def post_image(
 # Multiples images
 
 @app.post(
-    path='/image-multiple'
+    path='/image-multiple',
+    tags=['Upload Files'],
 )
 async def post_image_multiple(
     images: list[UploadFile] = File(...)
