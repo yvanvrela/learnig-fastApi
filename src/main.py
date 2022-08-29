@@ -16,6 +16,7 @@ from fastapi import Path
 from fastapi import Form
 from fastapi import status
 from fastapi import Header, Cookie
+from fastapi import UploadFile, File
 
 # Instancia de la clase
 app = FastAPI()
@@ -250,3 +251,35 @@ async def contact(
     ads: str | None = Cookie(default=None)
 ):
     return user_agent
+
+
+# Files
+
+@app.post(
+    path='/image'
+)
+async def post_image(
+    image: UploadFile = File(...)
+):
+    return {
+        'Filename': image.filename,
+        'Format': image.content_type,
+        'Size(kb)': round(len(image.file.read())/1024, ndigits=2)
+    }
+
+
+# Multiples images
+
+@app.post(
+    path='/image-multiple'
+)
+async def post_image_multiple(
+    images: list[UploadFile] = File(...)
+):
+    info_images = [{
+        "filename": image.filename,
+        "Format": image.content_type,
+        "Size(kb)": round(len(image.file.read())/1024, ndigits=2)
+    } for image in images]
+
+    return info_images

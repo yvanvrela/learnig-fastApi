@@ -115,5 +115,22 @@ Exotics - Common
 Una pieza de codigo que un servidor mete en tu computadora cuando estas navegando en la web.
 
 ### Headers
+
 Una parte de una peticion o respuesta HTTP que contiene datos sobre la peticion o la respuesta como el formato, quien la hizo, el contendio, etc.
 
+---
+
+### Data input types
+
+- Path Parameters --> URL (obligatorios)
+- Query Parameters --> URL (opcionales)
+- Request Body --> JSON
+- Forms --> Campos del frondtend
+- Headers --> cabeceras HTTP
+- Cookies --> Almacena informacion
+- Files
+  - File
+  - Upload File
+    - Filename
+    - Content_type --> File format
+    - File --> El archivo en si mismo
